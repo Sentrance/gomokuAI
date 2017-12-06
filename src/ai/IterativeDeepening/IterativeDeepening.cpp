@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include "../../../include/ai/IterativeDeepening/IterativeDeepening.hpp"
 #include "../../../include/ai/IterativeDeepening/IDThread.hpp"
-
+/*
 MoveData IterativeDeepening::makeMove(int depth) {
     std::chrono::time_point<std::chrono::system_clock> start, now;
 
@@ -32,3 +32,4 @@ MoveData IterativeDeepening::makeMove(int depth) {
     bestMoveEver = iDThread->bestMoveEver;
     return bestMoveEver;
 }
+*/

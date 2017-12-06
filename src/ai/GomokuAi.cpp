@@ -10,8 +10,10 @@
 
 //TODO: On doit aussi limiter la size de la board (pour qu'elle soit de 5 à 20)
 int GomokuAi::gomoStart(unsigned int size) {
-    gomoSendStart(true);
-
+    if (size > 4 && size < 21)
+        gomoSendStart(true);
+    else
+        gomoStart(false);
     std::vector<int> line;
     int data;
     int i = 0;
@@ -40,7 +42,7 @@ int GomokuAi::gomoTurn(int ennemyX, int ennemyY) {
     MoveData bestMove = miniMax->getBestPlay(ennemyX, ennemyY);
 
     gomoSendTurn(bestMove.x, bestMove.y);
-    board[bestMove.x][bestMove.y] = PLAYER;
+    board[bestMove.y][bestMove.x] = PLAYER;
     return 0;
 }
 

@@ -4,7 +4,7 @@
 
 #include "../../../include/ai/IterativeDeepening/IDThread.hpp"
 #include "../../../include/ai/AGomokuAi.hpp"
-
+/*
 IDThread::IDThread(const std::vector<std::vector<int>> &board, int depth) {
     this->board = board;
     this->depth = depth;
@@ -30,3 +30,4 @@ void IDThread::start() {
     hasEnded = true;
     delete(miniMax);
 }
+*/

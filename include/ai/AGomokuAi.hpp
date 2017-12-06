@@ -50,8 +50,8 @@ protected:
     };
     void gomoSendStart(bool isOk) {
         if (isOk)
-            return gomoSend("OK - everything is good");
-        return gomoSend("ERROR message - unsupported size or other error");
+            return gomoSend("OK");
+        return gomoSend("ERROR");
     }
     void gomoSendTurn(int x, int y) {
         gomoSend(std::to_string(x) + "," + std::to_string(y));
@@ -80,7 +80,6 @@ public:
                     return 84;
             }
             else if (line.find("BEGIN") != std::string::npos) {
-                std::wcerr << "Dans le begin" << std::endl;
                 if (gomoBegin() == 84)
                     return 84;
             }
