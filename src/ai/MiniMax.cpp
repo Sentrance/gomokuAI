@@ -26,6 +26,10 @@ int MiniMax::getValue(int i, int j, int player) {
         value += 1000;
     if (terminate(i, j, OPPONENT, 3))
         value += 1000;
+    if (terminate(i, j, PLAYER, 2))
+        value += 100;
+    if (terminate(i, j, OPPONENT, 2))
+        value += 100;
     k = 0;
     while (k < 4) {
         r = 0;
