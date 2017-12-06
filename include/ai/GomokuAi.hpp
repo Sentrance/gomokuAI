@@ -9,25 +9,15 @@
 #include <array>
 #include <tuple>
 #include "AGomokuAi.hpp"
-
-#define PLAYER 1
-#define OPPONENT 2
-#define NONE 0
-
-typedef struct s_data
-{
-    int x;
-    int y;
-    int value;
-} MoveData;
+#include "MiniMax.hpp"
 
 class GomokuAi final : public AGomokuAi {
     /*
      * Variables
      */
-
-public:
+private:
     std::vector<std::vector<int>> board;
+    MiniMax *miniMax = nullptr;
 
     /*
      * Constructor and destructor
@@ -51,7 +41,7 @@ public:
      */
 
 protected:
-    int gomoTurn(unsigned int x, unsigned int y) override;
+    int gomoTurn(int x, int y) override;
     int gomoBegin() override;
     int gomoBoard(std::vector<std::string> &newBoard) override;
     int gomoInfo(const std::string &infoKey) override;

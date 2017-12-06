@@ -10,6 +10,17 @@
 #include <sstream>
 #include "IGomokuAi.hpp"
 
+#define PLAYER 1
+#define OPPONENT 2
+#define NONE 0
+
+typedef struct s_data
+{
+    int x;
+    int y;
+    int value;
+} MoveData;
+
 class AGomokuAi : public IGomokuAi {
     /*
      * Variables

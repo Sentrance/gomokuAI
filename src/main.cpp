@@ -18,7 +18,8 @@ void print_map(std::vector<std::vector<int>> board)
 int main() {
     GomokuAi *gomokuAi = new GomokuAi();
 
-    gomokuAi->gomoStart(19);
-    print_map(gomokuAi->board);
+    gomokuAi->gomoGo();
+
+    delete(gomokuAi);
     return 0;
 }

@@ -22,7 +22,7 @@ protected:
     virtual int gomoStart(unsigned int size) = 0;
 
     //Expects you to make a move. The params are the last opponents move.
-    virtual int gomoTurn(unsigned int x, unsigned int y) = 0;
+    virtual int gomoTurn(int x, int y) = 0;
 
     //Expects you to make a move. This method means you are the first to play.
     virtual int gomoBegin() = 0;
