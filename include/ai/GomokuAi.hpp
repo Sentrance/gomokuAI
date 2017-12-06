@@ -5,6 +5,7 @@
 #ifndef GOMUKO_GOMUKOAI_HPP
 #define GOMUKO_GOMUKOAI_HPP
 
+#include <thread>
 #include <vector>
 #include <array>
 #include <tuple>
@@ -22,24 +23,13 @@ private:
     /*
      * Constructor and destructor
      */
-
-    int gomoStart(unsigned int size) override;
-
 public:
     GomokuAi();
     virtual ~GomokuAi() = default;
-    int getValue(int x, int y);
-    bool terminate(int x, int y, int player);
-
-    //Fonctions de décision des mouvement
-    MoveData decideMove(int depth);
-    int minScore(int depth, int a, int b, MoveData previousMove);
-    int maxScore(int depth, int a, int b, MoveData previousMove);
 
     /*
      * Methods
      */
-
 protected:
     int gomoTurn(int x, int y) override;
     int gomoBegin() override;
@@ -47,6 +37,7 @@ protected:
     int gomoInfo(const std::string &infoKey) override;
     int gomoEnd() override;
     int gomoAbout() override;
+    int gomoStart(unsigned int size) override;
 };
 
 #endif //GOMUKO_GOMUKOAI_HPP

@@ -54,7 +54,7 @@ protected:
         return gomoSend("ERROR message - unsupported size or other error");
     }
     void gomoSendTurn(int x, int y) {
-        gomoSend(x + "," + y);
+        gomoSend(std::to_string(x) + "," + std::to_string(y));
     }
     void gomoSendAbout() {
         gomoSend(about);
@@ -80,6 +80,7 @@ public:
                     return 84;
             }
             else if (line.find("BEGIN") != std::string::npos) {
+                std::wcerr << "Dans le begin" << std::endl;
                 if (gomoBegin() == 84)
                     return 84;
             }
@@ -95,6 +96,7 @@ public:
                     return 84;
             }
             else if (line.find("ABOUT") != std::string::npos) {
+                std::wcerr << "Dans le about" << std::endl;
                 if (gomoAbout() == 84)
                     return 84;
             }

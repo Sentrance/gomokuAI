@@ -4,9 +4,10 @@
 
 #include <vector>
 #include <tuple>
+#include <chrono>
+#include <unistd.h>
 #include "../../include/ai/GomokuAi.hpp"
 
-//TODO: gomoSend est à changer (correspond à la réponse attendu par le programme)
 //TODO: On doit aussi limiter la size de la board (pour qu'elle soit de 5 à 20)
 int GomokuAi::gomoStart(unsigned int size) {
     gomoSendStart(true);
@@ -73,19 +74,4 @@ int GomokuAi::gomoBoard(std::vector<std::string> &newBoard) {
 
 GomokuAi::GomokuAi() {
     about = R"(name="gomukobrain", version="1.0", author="Devia", country="FR")";
-}
-
-int GomokuAi::maxScore(int depth, int a, int b, MoveData previousMove)
-{
-    //todo: coder le maximise
-}
-
-int GomokuAi::minScore(int depth, int a, int b, MoveData previousMove)
-{
-    //todo: coder le minimise
-}
-
-MoveData GomokuAi::decideMove(int depth)
-{
-    return MoveData();
 }

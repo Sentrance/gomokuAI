@@ -224,7 +224,7 @@ MiniMax::MiniMax(const std::vector<std::vector<int>> &board) {
 
 MoveData MiniMax::getBestPlay(int x, int y) {
     std::vector<MoveData> moveDataV;
-    MoveData tempMoveData;
+    MoveData tempMoveData{};
 
     for (int i = y - 2; i < y + 3; i++) {
         for (int j = x - 2; j < x + 3; j++) {
@@ -238,7 +238,7 @@ MoveData MiniMax::getBestPlay(int x, int y) {
     }
 
     //todo: à enlever lorsqu'on fera l'iterative deepening
-    MoveData bestMove;
+    MoveData bestMove{};
     bestMove.value = -1;
     for (auto e : moveDataV) {
         if (e.value > bestMove.value)
