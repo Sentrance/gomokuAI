@@ -18,9 +18,13 @@ int MiniMax::getValue(int i, int j, int player) {
         value += 200000;
     if (terminate(i, j, OPPONENT, 5))
         value += 100000;
-    if (terminate(i, j, PLAYER, 4) || terminate(i, j, OPPONENT, 4))
+    if (terminate(i, j, PLAYER, 4))
         value += 10000;
-    if (terminate(i, j, PLAYER, 3) || terminate(i, j, OPPONENT, 3))
+    if (terminate(i, j, OPPONENT, 4))
+        value += 10000;
+    if (terminate(i, j, PLAYER, 3))
+        value += 1000;
+    if (terminate(i, j, OPPONENT, 3))
         value += 1000;
     k = 0;
     while (k < 4) {
@@ -234,9 +238,9 @@ MoveData MiniMax::getBestPlay(int x, int y) {
     std::vector<MoveData> moveDataV;
     MoveData tempMoveData{};
 
-    for (int i = y - 5; i < y + 6; i++) {
-        for (int j = x - 5; j < x + 6; j++) {
-            if (i >= 0 && j >= 0 && i < board.size() && j < board.size() && board[i][j] == NONE) {
+    for (int i = 0; i < board.size(); i++) {
+        for (int j = 0; j < board.size(); j++) {
+            if (board[i][j] == NONE) {
                 tempMoveData.x = j;
                 tempMoveData.y = i;
                 tempMoveData.value = getValue(i, j, OPPONENT);
