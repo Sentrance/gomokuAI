@@ -5,11 +5,10 @@
 #include <vector>
 #include <tuple>
 #include <chrono>
-#include <unistd.h>
 #include "../../include/ai/GomokuAi.hpp"
+#include "../../include/ai/IterativeDeepening/IterativeDeepening.hpp"
 
-//TODO: On doit aussi limiter la size de la board (pour qu'elle soit de 5 à 20)
-int GomokuAi::gomoStart(unsigned int size) {
+int GomokuAi::gomoStart(int size) {
     if (size > 4 && size < 21)
         gomoSendStart(true);
     else
@@ -40,6 +39,9 @@ int GomokuAi::gomoTurn(int ennemyX, int ennemyY) {
     miniMax->updateBoard(board);
 
     MoveData bestMove = miniMax->getBestPlay(ennemyX, ennemyY);
+//    MoveData bestMove = miniMax->decideMove(2);
+//    IterativeDeepening iterativeDeepening(board, 3);
+//    MoveData bestMove = iterativeDeepening.makeMove(5);
 
     gomoSendTurn(bestMove.x, bestMove.y);
     board[bestMove.y][bestMove.x] = PLAYER;
@@ -49,8 +51,8 @@ int GomokuAi::gomoTurn(int ennemyX, int ennemyY) {
 int GomokuAi::gomoBegin() {
     if (miniMax == nullptr)
         miniMax = new MiniMax(board);
-    gomoSendTurn(9, 9);
-    board[9][9] = PLAYER;
+    gomoSendTurn(board.size()/2, board.size()/2);
+    board[board.size()/2][board.size()/2] = PLAYER;
     return 0;
 }
 

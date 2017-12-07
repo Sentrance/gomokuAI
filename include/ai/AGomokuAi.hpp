@@ -104,6 +104,7 @@ public:
             else
                 gomoSend("UNKNOWN Whoops, I didn't understood what you said! Maybe the command isn't implemented?");
         }
+		return 0;
     };
 
     //

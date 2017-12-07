@@ -5,7 +5,7 @@
 #ifndef GOMOKU_IDTHREAD_HPP
 #define GOMOKU_IDTHREAD_HPP
 
-
+#include <thread>
 #include <vector>
 #include "../MiniMax.hpp"
 
@@ -34,6 +34,9 @@ public:
      */
 public:
     void start();
+	std::thread startThread() {
+		return std::thread([=] { start(); });
+	}
 };
 
 

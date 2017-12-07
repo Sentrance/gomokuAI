@@ -14,7 +14,10 @@ class MiniMax {
      */
 private:
     std::vector<std::vector<int>> board;
+    std::vector<std::vector<int>> boardCpy;
 
+public:
+    bool hasEnded;
     /*
      * Constructor / Destructor
      */
@@ -31,6 +34,11 @@ public:
     bool terminate(int x, int y, int player, int align);
     //todo: enlever ça aussi
     void updateBoard(const std::vector<std::vector<int>> &board);
+
+    MoveData decideMove(int depth);
+    int minMove(int depth, int alpha, int beta, MoveData prevMove);
+    int maxMove(int depth, int alpha, int beta, MoveData prevMove);
+    std::vector<MoveData> getAllMoves(int player);
 };
 
 

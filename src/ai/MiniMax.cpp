@@ -40,7 +40,7 @@ int MiniMax::getValue(int i, int j, int player) {
         while (len < 5) {
             switch (k) {
                 case 0:
-                    if (right && j + len >= board.size()) {
+                    if (right && j + len >= static_cast<int>(board.size())) {
                         r = len - 1;
                         right = false;
                     }
@@ -58,7 +58,7 @@ int MiniMax::getValue(int i, int j, int player) {
                     }
                     break;
                 case 1:
-                    if (right && (i + len >= board.size() || j + len >= board.size())) {
+                    if (right && (i + len >= static_cast<int>(board.size()) || j + len >= static_cast<int>(board.size()))) {
                         r = len - 1;
                         right = false;
                     }
@@ -76,7 +76,7 @@ int MiniMax::getValue(int i, int j, int player) {
                     }
                     break;
                 case 2:
-                    if (right && i + len >= board.size()) {
+                    if (right && i + len >= static_cast<int>(board.size())) {
                         r = len - 1;
                         right = false;
                     }
@@ -94,7 +94,7 @@ int MiniMax::getValue(int i, int j, int player) {
                     }
                     break;
                 case 3:
-                    if (right && (i - len < 0 || j + len >= board.size())) {
+                    if (right && (i - len < 0 || j + len >= static_cast<int>(board.size()))) {
                         r = len - 1;
                         right = false;
                     }
@@ -102,7 +102,7 @@ int MiniMax::getValue(int i, int j, int player) {
                         r = len - 1;
                         right = false;
                     }
-                    if (left && (i + len >= board.size() || j - len < 0)) {
+                    if (left && (i + len >= static_cast<int>(board.size()) || j - len < 0)) {
                         l = len - 1;
                         left = false;
                     }
@@ -147,7 +147,7 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
         while (len < 5) {
             switch (k) {
                 case 0:
-                    if (right && x + len >= board.size()) {
+                    if (right && y + len >= static_cast<int>(board.size())) {
                         r = len - 1;
                         right = false;
                     }
@@ -165,7 +165,7 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
                     }
                     break;
                 case 1:
-                    if (right && (x + len >= board.size() || y + len >= board.size())) {
+                    if (right && (x + len >= static_cast<int>(board.size()) || y + len >= static_cast<int>(board.size()))) {
                         r = len - 1;
                         right = false;
                     }
@@ -183,7 +183,7 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
                     }
                     break;
                 case 2:
-                    if (right && x + len >= board.size()) {
+                    if (right && x + len >= static_cast<int>(board.size())) {
                         r = len - 1;
                         right = false;
                     }
@@ -201,7 +201,7 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
                     }
                     break;
                 case 3:
-                    if (right && (x - len < 0 || y + len >= board.size())) {
+                    if (right && (x - len < 0 || y + len >= static_cast<int>(board.size()))) {
                         r = len - 1;
                         right = false;
                     }
@@ -209,7 +209,7 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
                         r = len - 1;
                         right = false;
                     }
-                    if (left && (x + len >= board.size() || y - len < 0)) {
+                    if (left && (x + len >= static_cast<int>(board.size()) || y - len < 0)) {
                         l = len - 1;
                         left = false;
                     }
@@ -236,14 +236,15 @@ bool MiniMax::terminate(int x, int y, int player, int align) {
 
 MiniMax::MiniMax(const std::vector<std::vector<int>> &board) {
     this->board = board;
+    hasEnded = false;
 }
 
 MoveData MiniMax::getBestPlay(int x, int y) {
     std::vector<MoveData> moveDataV;
     MoveData tempMoveData{};
 
-    for (int i = 0; i < board.size(); i++) {
-        for (int j = 0; j < board.size(); j++) {
+    for (int i = 0; i < static_cast<int>(board.size()); i++) {
+        for (int j = 0; j < static_cast<int>(board.size()); j++) {
             if (board[i][j] == NONE) {
                 tempMoveData.x = j;
                 tempMoveData.y = i;
@@ -265,4 +266,90 @@ MoveData MiniMax::getBestPlay(int x, int y) {
 
 void MiniMax::updateBoard(const std::vector<std::vector<int>> &board) {
     this->board = board;
+}
+
+MoveData MiniMax::decideMove(int depth) {
+    std::vector<MoveData> allMoves = getAllMoves(PLAYER);
+    MoveData bestMove{};
+    bestMove.value = -1;
+    int current;
+    boardCpy = board;
+
+    for (MoveData moveData : allMoves) {
+        boardCpy[moveData.y][moveData.x] = PLAYER;
+
+        current = minMove(depth, -50000000, 50000000, moveData);
+
+        if (bestMove.value == -1 || bestMove.value < current)
+            bestMove = moveData;
+        boardCpy[moveData.y][moveData.x] = NONE;
+        if (hasEnded)
+            break;
+    }
+    return bestMove;
+}
+
+int MiniMax::minMove(int depth, int alpha, int beta, MoveData prevMove) {
+    int result;
+
+    if (depth == 0 || hasEnded)
+        return prevMove.value;
+    result = 5000000;
+    std::vector<MoveData> allMoves = getAllMoves(OPPONENT);
+    for (MoveData newMove : allMoves) {
+        boardCpy[newMove.y][newMove.x] = OPPONENT;
+        int score = maxMove(depth - 1, alpha, beta, newMove);
+        boardCpy[newMove.y][newMove.x] = NONE;
+
+        result = (result < score) ? result : score;
+        beta = (score < beta) ? score : beta;
+        if (beta <= alpha)
+            break;
+    }
+    return result;
+}
+
+
+int MiniMax::maxMove(int depth, int alpha, int beta, MoveData prevMove) {
+    int result;
+
+    if (depth == 0 || hasEnded)
+        return prevMove.value;
+    result = -5000000;
+    std::vector<MoveData> allMoves = getAllMoves(PLAYER);
+    for (MoveData newMove : allMoves) {
+        boardCpy[newMove.y][newMove.x] = PLAYER;
+        int score = maxMove(depth - 1, alpha, beta, newMove);
+        boardCpy[newMove.y][newMove.x] = NONE;
+
+        result = (result > score) ? result : score;
+        alpha = (score > alpha) ? score : alpha;
+        if (beta <= alpha)
+            break;
+    }
+    return result;
+}
+
+std::vector<MoveData> MiniMax::getAllMoves(int player) {
+    std::vector<MoveData> moveDataV;
+    MoveData tempMoveData{};
+
+    for (int i = 0; i < static_cast<int>(board.size()); i++) {
+        for (int j = 0; j < static_cast<int>(board.size()); j++) {
+            if (board[i][j] == NONE) {
+                tempMoveData.x = j;
+                tempMoveData.y = i;
+                tempMoveData.value = getValue(i, j, player);
+                moveDataV.push_back(tempMoveData);
+            }
+        }
+    }
+
+    //todo: à enlever lorsqu'on fera l'iterative deepening
+    std::vector<MoveData> allMoves;
+    for (auto e : moveDataV) {
+        if (e.value > 100)
+            allMoves.push_back(e);
+    }
+    return allMoves;
 }

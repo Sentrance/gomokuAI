@@ -37,7 +37,7 @@ protected:
     int gomoInfo(const std::string &infoKey) override;
     int gomoEnd() override;
     int gomoAbout() override;
-    int gomoStart(unsigned int size) override;
+    int gomoStart(int size) override;
 };
 
 #endif //GOMUKO_GOMUKOAI_HPP
