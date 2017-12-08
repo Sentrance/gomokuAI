@@ -85,12 +85,18 @@ public:
                     return 84;
             }
             else if (line.find("BOARD") != std::string::npos) {
-                std::vector<std::string> board;
+				gomoSend("DEBUG On board");
+				std::vector<std::string> board;
 				while (std::getline(std::cin, line)) {
-					if (line.compare("DONE"))
+					gomoSend("DEBUG On board un tour de ligne");
+					if (line.find("DONE") != std::string::npos) {
 						if (gomoBoard(board) == 84)
 							return 84;
+						break;
+					}
+					gomoSend("DEBUG On board before pushback");
 					board.push_back(line);
+					gomoSend("DEBUG On board after pushback");
 				}
             }
             else if (line.find("INFO") != std::string::npos) {

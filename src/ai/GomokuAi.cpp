@@ -9,6 +9,8 @@
 #include "../../include/ai/IterativeDeepening/IterativeDeepening.hpp"
 
 int GomokuAi::gomoStart(int size) {
+	board.clear();
+	delete(miniMax);
     if (size > 4 && size < 21)
         gomoSendStart(true);
     else
@@ -30,7 +32,8 @@ int GomokuAi::gomoTurn(int ennemyX, int ennemyY) {
         miniMax = new MiniMax(board);
     miniMax->updateBoard(board);
 
-    MoveData bestMove = miniMax->decideMove(2);
+//    MoveData bestMove = miniMax->decideMove(2);
+	MoveData bestMove = miniMax->getBestPlay(ennemyX, ennemyY);
 
     gomoSendTurn(bestMove.x, bestMove.y);
     board[bestMove.y][bestMove.x] = PLAYER;
