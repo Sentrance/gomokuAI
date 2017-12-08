@@ -14,20 +14,12 @@ int GomokuAi::gomoStart(int size) {
     else
         gomoStart(false);
     std::vector<int> line;
-    int data;
-    int i = 0;
-    data = NONE;
-    while (i < size)
-    {
-        line.push_back(data);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
-        board.push_back(line);
-        i++;
-    }
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+			line.push_back(NONE);
+		board.push_back(line);
+	}
     return 0;
 }
 
@@ -38,10 +30,7 @@ int GomokuAi::gomoTurn(int ennemyX, int ennemyY) {
         miniMax = new MiniMax(board);
     miniMax->updateBoard(board);
 
-    MoveData bestMove = miniMax->getBestPlay(ennemyX, ennemyY);
-//    MoveData bestMove = miniMax->decideMove(2);
-//    IterativeDeepening iterativeDeepening(board, 3);
-//    MoveData bestMove = iterativeDeepening.makeMove(5);
+    MoveData bestMove = miniMax->decideMove(2);
 
     gomoSendTurn(bestMove.x, bestMove.y);
     board[bestMove.y][bestMove.x] = PLAYER;
@@ -60,9 +49,9 @@ int GomokuAi::gomoInfo(const std::string &infoKey) {
     return 0;
 }
 
-int GomokuAi::gomoEnd(
-
-) {
+int GomokuAi::gomoEnd() {
+	board.clear();
+	delete(miniMax);
     return 0;
 }
 
@@ -72,8 +61,21 @@ int GomokuAi::gomoAbout() {
 }
 
 int GomokuAi::gomoBoard(std::vector<std::string> &newBoard) {
-    gomoSendTurn(1, 1);
-    return 0;
+	if (board.size() == 0) {
+		gomoStart(19);
+		return gomoBegin();
+	} else {
+		std::vector<unsigned int> coord;
+		for (int i = 0; i < static_cast<int>(board.size()); i++)
+			for (int j = 0; j < static_cast<int>(board.size()); j++)
+				board[i][j] = 0;
+		for (std::string newInfo : newBoard) {
+			coord = split(newInfo, ',');
+			board[coord[1]][coord[0]] = coord[2];
+		}
+		gomoTurn(coord[0], coord[1]);
+	}
+	return 0;
 }
 
 GomokuAi::GomokuAi() {

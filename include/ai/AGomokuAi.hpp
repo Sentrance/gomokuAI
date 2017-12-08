@@ -66,6 +66,7 @@ public:
         std::string line;
 
         while (std::getline(std::cin, line)) {
+			gomoSend("DEBUG " + line);
             if (line.find("TURN") != std::string::npos) {
                 line.erase(0, 5);
 
@@ -73,7 +74,7 @@ public:
                 if (gomoTurn(coord[0], coord[1]) == 84)
                     return 84;
             }
-            else if (line.find("START") != std::string::npos) {
+            else if (strncmp("START", line.c_str(), 5) == 0) {
                 line.erase(0, 6);
 
                 if (gomoStart(static_cast<unsigned int>(std::stoi(line))) == 84)
@@ -85,10 +86,12 @@ public:
             }
             else if (line.find("BOARD") != std::string::npos) {
                 std::vector<std::string> board;
-                while (std::getline(std::cin, line))
-                    board.push_back(line);
-                if (gomoBoard(board) == 84)
-                    return 84;
+				while (std::getline(std::cin, line)) {
+					if (line.compare("DONE"))
+						if (gomoBoard(board) == 84)
+							return 84;
+					board.push_back(line);
+				}
             }
             else if (line.find("INFO") != std::string::npos) {
                 if (gomoInfo("DEBUG") == 84)
